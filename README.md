@@ -1,4 +1,4 @@
-cdb
+cdb - Constant DataBase
 ===
 
 CDB : A fast pure Java implementation of Daniel J. Bernstein's constant database.
