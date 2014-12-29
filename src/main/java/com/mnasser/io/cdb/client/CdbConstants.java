@@ -1,4 +1,4 @@
-package com.mnasser.io.cdb.server;
+package com.mnasser.io.cdb.client;
 
 /**
  * Constants used by CdbLookupService protocol

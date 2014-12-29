@@ -1,10 +1,12 @@
-package com.mnasser.io.cdb.server;
+package com.mnasser.io.cdb.client;
 
 
 
 /**
  * Dummy holder of map folder name and type.
  * <p>
+ * The CDB files that will be constructed are spread over several mmap'd files
+ * on disk. Within a folder
  * Builds out and holds the query prefix for fast query construction.
  * 
  * @author mnasser

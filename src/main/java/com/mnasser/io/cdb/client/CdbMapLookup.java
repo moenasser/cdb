@@ -1,6 +1,6 @@
-package com.mnasser.io.cdb.server;
+package com.mnasser.io.cdb.client;
 
-import static com.mnasser.io.cdb.server.CdbConstants.*;
+import static com.mnasser.io.cdb.client.CdbConstants.*;
 
 import java.io.BufferedOutputStream;
 import java.io.IOException;
