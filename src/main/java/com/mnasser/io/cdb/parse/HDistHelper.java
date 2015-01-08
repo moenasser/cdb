@@ -8,12 +8,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.regex.Pattern;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import com.proclivitysystems.commons.io.cdb.Cdb;
-import com.proclivitysystems.filehandlers.Utils;
-
+import com.mnasser.io.cdb.*;
+import com.mnasser.util.ShellUtils;
+ 
 /**
  * Helps with common functions on sharded CDBs.
  * 
@@ -21,7 +21,7 @@ import com.proclivitysystems.filehandlers.Utils;
  */
 public class HDistHelper implements HDistable {
 
-	public static Log _log = LogFactory.getLog(HDistHelper.class); 
+	public static Logger _log = LoggerFactory.getLogger(HDistHelper.class); 
 
 	/**
 	 * Dumps sharded CDB contents into one sorted dump file. 
@@ -60,8 +60,8 @@ public class HDistHelper implements HDistable {
 				"sort -T/sort -m -k 1,1 -t $SEP $cmd | sed 's/\\x01/,/'  > " + dumpFile.getAbsolutePath() + "\n" +
 				"rm "+base_name+"*cdb.sort.tmp;";
 
-		Utils.shellOut(_log, dmp_sort_cmd);
-		Utils.shellOut(_log, merg_sort_cmd);
+		ShellUtils.shellOut(_log, dmp_sort_cmd);
+		ShellUtils.shellOut(_log, merg_sort_cmd);
 		
 		long end = System.currentTimeMillis();
 		_log.info("Time to dump/sort contents: " + (end-start)/1000.0 + " sec");
@@ -91,7 +91,7 @@ public class HDistHelper implements HDistable {
 				"done;\n" +
 				"wait";
 		
-		for( String records : Utils.shellOut( cmd ) ){
+		for( String records : ShellUtils.shellOut( cmd ) ){
 			size += Integer.parseInt(records);
 		}
 		
@@ -158,12 +158,12 @@ public class HDistHelper implements HDistable {
 		
 		try {
 			
-			//Utils.shellOut(_log,"/psapp/sbin/rebuild_cdb_from_dump "+  inputFile.getAbsoluteFile().toString()  + ' ' + base_name);
+			//ShellUtils.shellOut(_log,"/psapp/sbin/rebuild_cdb_from_dump "+  inputFile.getAbsoluteFile().toString()  + ' ' + base_name);
 			hd.run();
 			
 		}catch(IOException ioe){
 			// remove the shrds in case of failure
-			Utils.shellOut(_log, "rm " + base_name + "*shrd?");
+			ShellUtils.shellOut(_log, "rm " + base_name + "*shrd?");
 			throw ioe;
 		}
 		
@@ -179,7 +179,7 @@ public class HDistHelper implements HDistable {
 		"done\n" +
 		"wait";
 
-		Utils.shellOut(_log, cmd);
+		ShellUtils.shellOut(_log, cmd);
 		
 		
 		_log.info("Built CDBs.");
@@ -193,8 +193,8 @@ public class HDistHelper implements HDistable {
 		"wait\n" +
 		"cd "+dir.getAbsolutePath()+" && tar -cf   "+targzfn+" *shrd*.cdb.gz --remove-files   2>/dev/null ";
 
-		//Utils.shellOut(_log, "cd "+dir.getAbsolutePath()+" && tar -czf   "+targzfn+" *.cdb   2>/dev/null ");
-		Utils.shellOut(_log, cmd );
+		//ShellUtils.shellOut(_log, "cd "+dir.getAbsolutePath()+" && tar -czf   "+targzfn+" *.cdb   2>/dev/null ");
+		ShellUtils.shellOut(_log, cmd );
 		
 		long _end = System.currentTimeMillis();
 		
@@ -234,8 +234,8 @@ public class HDistHelper implements HDistable {
 	    rm $2.sort
 	    ****/
 		
-		Utils.shellOut(_log, sortDelta);
-		Utils.shellOut(_log, mergeSort);
+		ShellUtils.shellOut(_log, sortDelta);
+		ShellUtils.shellOut(_log, mergeSort);
 		
 		_log.info("Megred Dump and Delta in " + ( ((float)System.currentTimeMillis()-start) / 1000.0 ) + " sec ");
 	}

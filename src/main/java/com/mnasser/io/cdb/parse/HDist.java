@@ -11,19 +11,16 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.OptionBuilder;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.ParseException;
-import org.apache.commons.cli.PosixParser;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import com.proclivitysystems.commons.io.ByteBuilder;
+import org.apache.commons.cli.*;
+
+import com.mnasser.io.*;
 
 public class HDist implements HDistable {
 
-	public static Log _log = LogFactory.getLog(HDist.class);
+	public static Logger _log = LoggerFactory.getLogger(HDist.class);
 	
 	public static int hashMod(int mod){  return ( mod < 0 )?  mod %  CDB_SHARD_COUNT :  mod; 	}
 	
